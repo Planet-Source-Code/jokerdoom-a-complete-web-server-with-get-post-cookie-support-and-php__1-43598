@@ -1,0 +1,101 @@
+<html>
+<head>
+<title>Documentation</title>
+<body>
+   <font face="Impact" size="7"><u>Hyper X 5.0 Documentation</u></font>
+   <font face="Arial" size="5"><b><pre>
+Contents
+   Preface
+   I. Installation
+      A. Configuration
+      B. Installing PHP
+   II. Using Hyper X 5.0
+      B. Start Up
+      C. Commands
+      D. Security Features
+         1. IDS
+         2. Server Log
+   III. Testing Results and Release Notes
+      A. Known Bugs
+      B. Security
+      C. Epilogue
+End Contents
+</pre></b></font>
+
+<font size="3">
+<h2>Preface</h2>
+If you know the technical details about webservers and such things you may skip down to the Installation part.<br>
+As most of you know a web server is a program that recieves a request from a web browser and then processes the request, and sends back the requested file or data. If the file was not on the server it sends back an 404(File Not Found) message.  A Web Server by definition must support VERBS, such include the GET, POST, HEAD, and OPTION verbs.  A request using the GET verb looks like this.
+
+<pre>
+GET / HTTP/1.1
+</pre>
+
+This simple request ask for the default page(the slash tells the server to send its default page) contained on a webservers server directory(normally "index.html").  It also specifies that the connection is using the HTTP 1.1 specification(unimportant to us).  A post verb is used to send data to a cgi program, script, or sapi dll.  A post request looks like this.
+
+<pre>
+POST /hey.php HTTP/1.1
+HOST: WWW
+
+password=mypass&username=admin
+</pre>
+
+The Hyper X 5.0 Server supports the GET and POST verbs, the most commonly used.  You may feel the call to include the new verbs yourself, and simply make a few modifications in the serverfunctions module.  
+
+<h2>Installation</h2>
+<b><u>Configuration</b></u><br>
+    Hyper X 5.0 was created using Visual Basic, if you do not have a visual basic compiler and still wish to run the server, e-mail me at Gunhawk@charter.net.  You will need several of the standard visual basic runtime dll's however they are usually standard on Windows computers and you should have no problem.  The Hyper X 5.0 Server doesn't need to be installed if you have the necessary dll's and ocx's.  It is open so you can modify it yourself to suit your needs.  Normally just compile it, place it in a directory of your choice, and wait for it to start.  Note the first time you start it, it may report an error loading, do not worry it is simply telling you that it found no dirsettings.txt file(explained further under startup) in the application directory.  Moving on once you can see the main form of the Web Server Click File-Change Server Directory... And change the server directory the place where you want to contain your web page.  This is highly recommended as leaving the server directory as the application directory is a security risk.  Officially it is recommended that you create a C:\www directory and select it as the server directory.<br><br>
+
+<b><u>Installing PHP</b></u><br>
+    To use the php capabilities of Hyper X 5.0 you will need to go to PHP.net and download the latest distribution, and unzip it onto a folder like c:\php.  Then you will need to place the following files that were in that zip file into your windows directory: php.exe, php.ini, and php4ts.dll.  Once this is done, all you need to do is place your PHP scripts in your sever directory and request them and make sure they work.  NOTE: Errors have occured before involving PHP scripts and the Server Directory path being to long.  The PHP feature worked best when located in a directory with a short pathname, such as C:\www as stated in the installation segment.
+
+<h2>Using Hyper X 5.0</h2>
+<b><u>Startup</b></u><br>
+
+    Once you make sure the code is working properly on your cpu you are gonna want to try the file out right?  Double click the exe.  Once started the app will look for a file named dirsettings.txt in the applications directory, if it does not find it, or an error occurs reading it, it will report the error and create a new file, it will also create a new file in the case that this is the first time you are running Hyper X 5.0, the file has become corrupted, or the data in the file is not valid.  The dirsettings.txt file contains the server directory, whether to show the server at startup, whether it will startup with IDS sounds(see IDS section), and whether it saves a file to log. At this moment the format for the file is somewhat flexible as long as the first line contains a string path for the server directory.  The following strings must be placed on individual lines of their own and will have an effect on the startup behavior: "hideserver", "keeplog", and  "dosounds".  This is documented so that if for some reason you need to modify the dirsettings.txt file manually, you will be able to. The normal way of modifying the dirsettings.txt file is to use the menu items under the Preferences Main menu item.<br><br>
+
+<b><u>Commands</b></u><br>
+
+The following is a list of the commands that may be used in the command text box to the left of the execute button on the server. Feel free to add your own commands.
+<pre>
+"clear" Clears the textbox log
+"close" Stops listening for connections
+"listen" Resumes listening for connections
+"resethits" Sets the Hit counter to 0
+"hide" Hides the Server form Server continues serving pages when this is done
+</pre>
+
+<h2>Security Features</h2>
+
+<b><u>IDS</b></u><br>
+IDS stands for Intrusion Detection System.  The amount of hacker attempts on the server may be viewed under the status dialog(press Ctrl-S to view it).  One of the driving ideas Hyper X's development was security, and as a result Hyper X is very secure against a wide range of attacks, including an attack that most of the PSC webservers are vulnerable to--the /....../ slashdot directory traversal exploit.  It uses a simple algorithm to determine which request are malicious and which are not, it then blocks the malicious ones and if the sounds menu item is checked, will sound a nice DING!  IDS improvement ideas are being accepted and if approved will be incorporated into the official version.
+<br><br>
+<b><u>Server Log</b></u><br>
+If the Keep Server Log Menu items is check the server will a keep a log otherwise not. The server keeps a logfile of all request sent to it, this file is named Serverlog, and is written to every 50 requests to save processor load and memory usage.  The log file needs to be perfected its format is bad right now.
+
+<h2>Release Notes</h2>
+Cookies are now supported and are parsed and passed to the php.exe along with rest of the variables obtained from the GET Url or the post data. Thank you if you have read this whole thing.  I hope you now understand this program better and will at one time modify it yourself and maybe post a mod.  I worked pretty hard documenting the whole thing, and a vote would be appreciated.  But have fun using this for...whatever you want!
+<br>
+<br>
+<b><u>Known Bugs</b></u>
+<br>
+Only Two bugs are Security related
+If the server is running on Windows 98 the following request will lock it up
+
+<pre>
+GET /aux HTTP/1.1
+</pre>
+
+The reason for this vulnerability is unknown.  However a simple mod would get rid of it.  The bug does not exist on Windows 2000, or XP.  The only other bug is the DOS(denial of service) vulnerability, this has been a plague from the start, and I have no Idea how to fix it.  A DOS attack is when someone sends a ton of data to try to overload the server, and Hyper X 5.0 justs locks up when I run the test. If you have a suggestion please e-mail me, and I will officially correct it.<
+<br>
+<br>
+Another bug that is known is that, when I try to run php nuke, it seems that cookies are not correctly parsed which,despite great amounts of time put into correcting this flaw, is still present.  Cookie data seems to be parsed fine otherwise, perhaps I am implementing the specification incorrectly.
+<br><br>
+<b><u>Epilogue</b></u>
+<br>
+Well thats about all there is to know about the server, except what can be learned from the actual code.  So Enjoy playing around with it!<br><br>
+Hyper X 5.0 was written by Cory Dambach<br>
+Cory Dambach owns SunfireOnline.com<br>
+Copyright Sunfire Online 2002-2003 <a href="www.sunfireonline.com">SunfireOnline.com</a>
+</body>
+</html>
